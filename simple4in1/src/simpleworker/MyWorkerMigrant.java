@@ -1,5 +1,8 @@
 package simpleworker;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 public class MyWorkerMigrant {
     String host;
     String workerName;
@@ -40,13 +43,17 @@ public class MyWorkerMigrant {
         this.workerName = name;
 //        System.out.println(this.getClass());
         DynamicProxy dynamicProxy = new DynamicProxy(new MyWorkerService(this));
-        MyWorker myworker = (MyWorker) dynamicProxy.bind();
+        MyWorker myworker = (MyWorker) dynamicProxy.bind(MyWorker.class);
         RMIService.createService(host, port, name, myworker);
-//        try {
-//            myworker.doTask();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+        //获取ParkService
+        try {
+
+            LocalPark localPark = (LocalPark) RMIService.getService("localhost", 2000, "ParkService");
+            localPark.create(this.host, this.port, this.workerName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

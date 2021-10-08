@@ -18,17 +18,24 @@ public class DynamicProxy implements InvocationHandler {
         this.object = new Object[] {object};
     }
 
-    public Object bind() {
-        return Proxy.newProxyInstance(MyWorker.class.getClassLoader(), new Class<?>[]{MyWorker.class}, this);
+    public Object bind(Class cls) {
+        return Proxy.newProxyInstance(cls.getClassLoader(), new Class<?>[]{cls}, this);
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        MyWorkerService service=(MyWorkerService) this.object[0];
+//        MyWorkerService service=(MyWorkerService) this.object[0];
+//
+//        for (Method method1 : service.getClass().getMethods()) {
+//            if (method1.getName().equals(method.getName())) {
+//                return method1.invoke(service, args);
+//            }
+//        }
+//        return null;
 
-        for (Method method1 : service.getClass().getMethods()) {
+        for (Method method1 : this.object[0].getClass().getMethods()) {
             if (method1.getName().equals(method.getName())) {
-                return method1.invoke(service, args);
+                return method1.invoke(this.object[0], args);
             }
         }
         return null;
