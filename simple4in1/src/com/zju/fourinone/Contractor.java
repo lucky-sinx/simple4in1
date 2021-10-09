@@ -11,7 +11,7 @@ import java.util.Map;
  * =Contractor*
  */
 public class Contractor {
-    public void giveTask() {
+    public void giveTask() throws RemoteException {
 
     }
 
@@ -30,7 +30,7 @@ public class Contractor {
                     Map.Entry<String, Map<String, Object>> next = iterator.next();
                     Map<String, Object> info = next.getValue();
                     waitingWorkers[index] = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
-                    waitingWorkers[index].doTask();
+//                    waitingWorkers[index].doTask();
                     index += 1;
                 }
             }
