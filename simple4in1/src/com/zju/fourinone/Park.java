@@ -74,7 +74,7 @@ public class Park extends Service implements ParkRemote {
         } finally {
             wlk.unlock();
         }
-        LogUtil.info(host + ":" + port + "/" + name + " beat!");
+//        LogUtil.info(host + ":" + port + "/" + name + " beat!");
     }
 
     public void checkHeartbeats() {
