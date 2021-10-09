@@ -32,7 +32,7 @@ public class XmlReaderUtil {
             saxParser.parse(src, handler);
             props = handler.getProps();
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            LogUtil.severe("[XmlUtil] " + "[getXmlPropsByFile] " + e.getClass()+": " + e.getMessage());
+            LogUtil.severe("[XmlUtil] [getXmlPropsByFile] " + e.getClass()+": " + e.getMessage());
         }
         return props;
     }

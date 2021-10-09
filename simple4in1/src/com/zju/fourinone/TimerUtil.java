@@ -17,6 +17,7 @@ public class TimerUtil {
                 park.checkHeartbeats();
             }
         }, 0, Config.getHeartbeatTime());
+        LogUtil.info("ParkTimerTask start");
     }
 
     public static void startWorkerTimerTask(LocalPark localPark, String workerHost, int workerPost, String workerName) {
@@ -25,8 +26,9 @@ public class TimerUtil {
             public void run() {
                 try {
                     localPark.heartbeat(workerHost, workerPost, workerName);
+                    LogUtil.info("WorkerTimerTask start");
                 } catch (RemoteException e) {
-                    LogUtil.severe("[TimerUtil] " + "[startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
+                    LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }
             }
         }, 0, Config.getHeartbeatTime());

@@ -19,57 +19,48 @@ public class Park extends Service implements LocalPark {
         this.setHost(host);
         this.setPort(port);
         this.setName(name);
+        LogUtil.info("Park start");
     }
 
     public void create(String host, int port, String name) {
         Lock wlk = rwlk.writeLock();
         wlk.lock();
-        try {
-            Map<String, Map<String, Object>> node = workers.get(name);
-            if (node == null) {
-                node = new HashMap<>();
-                Map<String, Object> info = new HashMap<>();
-                info.put("host", host);
-                info.put("port", port);
-                info.put("name", name);
-                info.put("time", System.currentTimeMillis());
-                node.put(host + ":" + port + ":" + name, info);
-                workers.put(name, node);
-            } else {
-                Map<String, Object> info = new HashMap<>();
-                info.put("host", host);
-                info.put("port", port);
-                info.put("name", name);
-                info.put("time", System.currentTimeMillis());
-                node.put(host + ":" + port + ":" + name, info);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            wlk.unlock();
+        Map<String, Map<String, Object>> node = workers.get(name);
+        if (node == null) {
+            node = new HashMap<>();
+            Map<String, Object> info = new HashMap<>();
+            info.put("host", host);
+            info.put("port", port);
+            info.put("name", name);
+            info.put("time", System.currentTimeMillis());
+            node.put(host + ":" + port + ":" + name, info);
+            workers.put(name, node);
+        } else {
+            Map<String, Object> info = new HashMap<>();
+            info.put("host", host);
+            info.put("port", port);
+            info.put("name", name);
+            info.put("time", System.currentTimeMillis());
+            node.put(host + ":" + port + ":" + name, info);
         }
+        wlk.unlock();
     }
 
     public void heartbeat(String host, int port, String name) {
         Lock wlk = rwlk.writeLock();
         wlk.lock();
-        try {
-            Map<String, Map<String, Object>> node = workers.get(name);
-            if (node == null) {
-                LogUtil.info("Wrong");
+        Map<String, Map<String, Object>> node = workers.get(name);
+        if (node == null) {
+            LogUtil.warning("[Park] [heartbeat] workers get node " + name + "null");
+        } else {
+            Map<String, Object> info = node.get(host + ":" + port + ":" + name);
+            if (info == null) {
+                LogUtil.warning("[Park] [heartbeat] node get info " + host + ":" + port + ":" + name + "null");
             } else {
-                Map<String, Object> info = node.get(host + ":" + port + ":" + name);
-                if (info == null) {
-                    LogUtil.info("Wrong");
-                } else {
-                    info.put("time", System.currentTimeMillis());
-                }
+                info.put("time", System.currentTimeMillis());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            wlk.unlock();
         }
+        wlk.unlock();
     }
 
     public void checkHeartbeats() {
@@ -82,7 +73,7 @@ public class Park extends Service implements LocalPark {
                 Map<String, Object> info = next2.getValue();
                 if (System.currentTimeMillis() - (Long) info.get("time") > timeout) {
                     iterator2.remove();
-                    LogUtil.info(next2.getKey() + " remove!!!");
+                    LogUtil.warning(next2.getKey() + " remove");
                 }
             }
         }
@@ -90,15 +81,10 @@ public class Park extends Service implements LocalPark {
 
     public Map<String, Map<String, Object>> get(String name) {
         Lock rlk = rwlk.readLock();
-        Map<String, Map<String, Object>> res = null;
+        Map<String, Map<String, Object>> res;
         rlk.lock();
-        try {
-            res = workers.get(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            rlk.unlock();
-        }
+        res = workers.get(name);
+        rlk.unlock();
         return res;
     }
 }

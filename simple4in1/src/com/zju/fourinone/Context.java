@@ -38,13 +38,13 @@ public class Context {
                 try {
                     parkRemote.create(worker.getHost(), worker.getPort(), worker.getName());
                 } catch (RemoteException e) {
-                    LogUtil.severe("[Context] " + "[startWorker] " + e.getClass() + ": " + e.getMessage());
+                    LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
                 }
                 TimerUtil.startWorkerTimerTask(parkRemote, worker.getHost(), worker.getPort(), worker.getName());
             }
             System.out.println(localPark.get(worker.getName()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
         }
     }
 }

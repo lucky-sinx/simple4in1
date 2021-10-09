@@ -23,5 +23,6 @@ public class Worker extends Service implements LocalWorker {
         this.setPort(port);
         this.setName(name);
         Context.startWorker(this);
+        LogUtil.info("Worker start");
     }
 }

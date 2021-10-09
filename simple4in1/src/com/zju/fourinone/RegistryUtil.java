@@ -26,7 +26,7 @@ public class RegistryUtil {
                 Registry registry = LocateRegistry.createRegistry(port);
                 registry.rebind(name, object);
             } catch (RemoteException e) {
-                LogUtil.severe("[RegistryUtil] " + "[getRegistry] " + e.getClass()+": " + e.getMessage());
+                LogUtil.severe("[RegistryUtil] [getRegistry] " + e.getClass()+": " + e.getMessage());
             }
         }
     }
@@ -40,7 +40,7 @@ public class RegistryUtil {
             Registry registry = LocateRegistry.getRegistry(host,port);
             return registry.lookup(name);
         } catch (NotBoundException | RemoteException e) {
-            LogUtil.severe("[RegistryUtil] " + "[getRegistry] " + e.getClass()+": " + e.getMessage());
+            LogUtil.severe("[RegistryUtil] [getRegistry] " + e.getClass()+": " + e.getMessage());
         }
         return null;
     }

@@ -19,7 +19,7 @@ public class Contractor {
         try {
             workersInfo = Context.getPark().get(workerName);
             if (workersInfo == null) {
-                System.out.println("未找到worker");
+                LogUtil.warning("[Contractor] [getWaitingWorkers] getPark null");
             } else {
                 waitingWorkers = new LocalWorker[workersInfo.size()];
                 int index = 0;
@@ -32,7 +32,7 @@ public class Contractor {
                 }
             }
         } catch (RemoteException e) {
-            e.printStackTrace();
+            LogUtil.severe("[Contractor] [getWaitingWorkers] " + e.getClass() + e.getMessage());
         }
         return waitingWorkers;
     }
