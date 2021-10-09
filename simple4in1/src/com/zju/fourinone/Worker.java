@@ -1,5 +1,6 @@
 package com.zju.fourinone;
 
+import java.beans.beancontext.BeanContext;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -8,20 +9,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * =Worker*
  */
 public class Worker extends Service implements WorkerRemote {
-    private final Lock lk = new ReentrantLock();
-
-    public Worker(String host, int port, String name) {
-        super(host, port, name);
-    }
-
     @Override
     public void doTask() {
-        try {
-            this.lk.lock();
-            System.out.println("Here>>>>");
-        } finally {
-            this.lk.unlock();
-        }
     }
 
     @Override
@@ -31,5 +20,12 @@ public class Worker extends Service implements WorkerRemote {
                 ", workerName='" + getName() + '\'' +
                 ", port=" + getPort() +
                 '}';
+    }
+
+    public void startWorker(String host, int port, String name) {
+        this.setHost(host);
+        this.setPort(port);
+        this.setName(name);
+        Context.startWorker(this);
     }
 }

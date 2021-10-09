@@ -16,7 +16,9 @@ public class Park extends Service implements ParkRemote {
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();
 
     public Park(String host, int port, String name) {
-        super(host, port, name);
+        this.setHost(host);
+        this.setPort(port);
+        this.setName(name);
     }
 
     public void create(String host, int port, String name) {

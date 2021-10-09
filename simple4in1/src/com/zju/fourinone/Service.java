@@ -1,15 +1,15 @@
 package com.zju.fourinone;
 
 public abstract class Service {
-    private final String host;
-    private final int port;
-    private final String name;
+    String host;
+    int port;
+    String name;
 
-    public Service(String host, int port, String name) {
-        this.host = host;
-        this.port = port;
-        this.name = name;
-    }
+//    public Service(String host, int port, String name) {
+//        this.host = host;
+//        this.port = port;
+//        this.name = name;
+//    }
 
     public String getHost() {
         return host;
@@ -21,5 +21,17 @@ public abstract class Service {
 
     public String getName() {
         return name;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
