@@ -1,9 +1,8 @@
 package simpleworker;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.io.Serializable;
 
-public class MyWorkerMigrant {
+public class WorkerMigrant implements Serializable {
     String host;
     String workerName;
     int port;
@@ -36,21 +35,32 @@ public class MyWorkerMigrant {
         System.out.println("My WorkerService: DoTask");
     }
 
+    @Override
+    public String toString() {
+        return "MyWorkerMigrant{" +
+                "host='" + host + '\'' +
+                ", workerName='" + workerName + '\'' +
+                ", port=" + port +
+                '}';
+    }
 
     public void startService(String host, int port, String name) {
         this.host = host;
         this.port = port;
         this.workerName = name;
 //        System.out.println(this.getClass());
-        DynamicProxy dynamicProxy = new DynamicProxy(new MyWorkerService(this));
-        MyWorker myworker = (MyWorker) dynamicProxy.bind(MyWorker.class);
+        DynamicProxy dynamicProxy = new DynamicProxy(new WorkerService(this));
+//        MyWorker myworker = (MyWorker) dynamicProxy.bind(MyWorker.class);
+        LocalWorker myworker = (LocalWorker) dynamicProxy.bind(LocalWorker.class);
         RMIService.createService(host, port, name, myworker);
 
         //获取ParkService
         try {
 
-            LocalPark localPark = (LocalPark) RMIService.getService("localhost", 2000, "ParkService");
+            LocalPark localPark = (LocalPark) RMIService.getService("localhost", 2001, "ParkService");
             localPark.create(this.host, this.port, this.workerName);
+            System.out.println(localPark.get(this.workerName));
+//            localPark.f(this);
         } catch (Exception e) {
             e.printStackTrace();
         }

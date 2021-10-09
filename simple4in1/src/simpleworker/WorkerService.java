@@ -3,11 +3,11 @@ package simpleworker;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MyWorkerService {
-    MyWorkerMigrant migrant;
+public class WorkerService {
+    WorkerMigrant migrant;
     private Lock lk = new ReentrantLock();
 
-    public MyWorkerService(MyWorkerMigrant migrant) {
+    public WorkerService(WorkerMigrant migrant) {
         this.migrant = migrant;
     }
 
