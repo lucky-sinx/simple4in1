@@ -7,9 +7,6 @@ import java.lang.reflect.Proxy;
 public class DynamicProxy implements InvocationHandler {
     private Object[] object;
 
-    public DynamicProxy() {
-    }
-
     public DynamicProxy(Object object) {
         this.object = new Object[] {object};
     }
@@ -18,7 +15,7 @@ public class DynamicProxy implements InvocationHandler {
         this.object = new Object[] {object};
     }
 
-    public Object bind(Class cls) {
+    public Object bind(Class<?> cls) {
         return Proxy.newProxyInstance(cls.getClassLoader(), new Class<?>[]{cls}, this);
     }
 

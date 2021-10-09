@@ -1,14 +1,10 @@
 package com.zju.fourinone;
 
-import java.beans.beancontext.BeanContext;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * 理解：
  * =Worker*
  */
-public class Worker extends Service implements WorkerRemote {
+public class Worker extends Service implements LocalWorker {
     @Override
     public void doTask() {
     }

@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * =Park*
  */
 // implements ParkInterface为什么去掉也可以反射???
-public class Park extends Service implements ParkRemote {
+public class Park extends Service implements LocalPark {
     private final Map<String, Map<String, Map<String, Object>>> workers = new HashMap<>();
     private final static long timeout = Config.getHeartbeatTime() * 2;
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();
@@ -22,11 +22,9 @@ public class Park extends Service implements ParkRemote {
     }
 
     public void create(String host, int port, String name) {
-//        workers.put(host + ":" + port + "/" + name, System.currentTimeMillis());
         Lock wlk = rwlk.writeLock();
         wlk.lock();
         try {
-//            List<Map<String, Object>> node = (ArrayList<Map<String, Object>>) workers.get(name);
             Map<String, Map<String, Object>> node = workers.get(name);
             if (node == null) {
                 node = new HashMap<>();
@@ -53,11 +51,9 @@ public class Park extends Service implements ParkRemote {
     }
 
     public void heartbeat(String host, int port, String name) {
-//        workers.put(host + ":" + port + "/" + name, System.currentTimeMillis());
         Lock wlk = rwlk.writeLock();
         wlk.lock();
         try {
-//            List<Map<String, Object>> node = (ArrayList<Map<String, Object>>) workers.get(name);
             Map<String, Map<String, Object>> node = workers.get(name);
             if (node == null) {
                 LogUtil.info("Wrong");
@@ -74,7 +70,6 @@ public class Park extends Service implements ParkRemote {
         } finally {
             wlk.unlock();
         }
-//        LogUtil.info(host + ":" + port + "/" + name + " beat!");
     }
 
     public void checkHeartbeats() {
@@ -91,14 +86,6 @@ public class Park extends Service implements ParkRemote {
                 }
             }
         }
-//        Iterator<Map.Entry<String, Long>> iterator = workers.entrySet().iterator();
-//        while (iterator.hasNext()) {
-//            Map.Entry<String, Long> workerInfo = iterator.next();
-//            if (System.currentTimeMillis() - workerInfo.getValue() > timeout) {
-//                iterator.remove();
-//                LogUtil.info(workerInfo.getKey() + " remove!!!");
-//            }
-//        }
     }
 
     public Map<String, Map<String, Object>> get(String name) {

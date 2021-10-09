@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class WorkerService implements Serializable {
     Worker worker;
-    private Lock lk = new ReentrantLock();
+    private final Lock lk = new ReentrantLock();
 
     public WorkerService(Worker worker) {
         this.worker = worker;

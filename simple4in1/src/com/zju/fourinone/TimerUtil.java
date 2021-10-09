@@ -19,12 +19,12 @@ public class TimerUtil {
         }, 0, Config.getHeartbeatTime());
     }
 
-    public static void startWorkerTimerTask(ParkRemote parkRemote, String workerHost, int workerPost, String workerName) {
+    public static void startWorkerTimerTask(LocalPark localPark, String workerHost, int workerPost, String workerName) {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    parkRemote.heartbeat(workerHost, workerPost, workerName);
+                    localPark.heartbeat(workerHost, workerPost, workerName);
                 } catch (RemoteException e) {
                     LogUtil.severe("[TimerUtil] " + "[startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }

@@ -5,12 +5,6 @@ public abstract class Service {
     int port;
     String name;
 
-//    public Service(String host, int port, String name) {
-//        this.host = host;
-//        this.port = port;
-//        this.name = name;
-//    }
-
     public String getHost() {
         return host;
     }
