@@ -1,8 +1,8 @@
-package simpleworker;
+package com.zju.fourinone;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface LocalWorker extends Remote {
+public interface WorkerRemote extends Remote {
     void doTask() throws RemoteException;
 }

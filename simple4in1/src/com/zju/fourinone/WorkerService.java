@@ -1,21 +1,22 @@
-package simpleworker;
+package com.zju.fourinone;
 
+
+import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class WorkerService {
-    WorkerMigrant migrant;
+public class WorkerService implements Serializable {
+    Worker worker;
     private Lock lk = new ReentrantLock();
 
-    public WorkerService(WorkerMigrant migrant) {
-        this.migrant = migrant;
+    public WorkerService(Worker worker) {
+        this.worker = worker;
     }
 
     public void doTask() {
         try {
-//            System.out.println("Here>>>>");
             this.lk.lock();
-            this.migrant.doTask();
+            this.worker.doTask();
         } finally {
             this.lk.unlock();
         }
