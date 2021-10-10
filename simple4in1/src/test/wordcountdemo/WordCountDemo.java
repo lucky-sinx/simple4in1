@@ -28,7 +28,7 @@ public class WordCountDemo {
     public void startTask() throws RemoteException {
         WordCountContractor contractor = new WordCountContractor();
         long begin = (new Date()).getTime();
-        String dataPath = "D:\\code\\java\\分布式作业\\simple4in1\\src\\test\\wordcountdemo\\";
+        String dataPath = ".\\src\\test\\wordcountdemo\\";
         WareHouse result = contractor.giveTask(new WareHouse("filepath", new String[]{
                 new String(dataPath + "data1.txt"),
                 new String(dataPath + "data2.txt"),
