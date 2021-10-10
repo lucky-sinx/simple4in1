@@ -26,7 +26,7 @@ public class Context {
     }
 
     static void startWorker(Worker worker) {
-        DynamicProxy dynamicProxy = new DynamicProxy(new WorkerService(worker));
+        DynamicProxy dynamicProxy = new DynamicProxy(new WorkerServiceProxy(worker));
         LocalWorker myworker = (LocalWorker) dynamicProxy.bind(LocalWorker.class);
         RegistryUtil.createRegistry(worker.getPort(), worker.getName(), myworker);
         //获取ParkService

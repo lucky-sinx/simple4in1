@@ -13,7 +13,7 @@ public class Contractor {
 
     }
 
-    static LocalWorker[] getWaitingWorkers(String workerName) {
+    protected static LocalWorker[] getWaitingWorkers(String workerName) {
         Map<String, Map<String, Object>> workersInfo;
         LocalWorker[] waitingWorkers = null;
         try {
@@ -27,7 +27,10 @@ public class Contractor {
                 while (iterator.hasNext()) {
                     Map.Entry<String, Map<String, Object>> next = iterator.next();
                     Map<String, Object> info = next.getValue();
-                    waitingWorkers[index] = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
+                    LocalWorker serverWorker = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
+                    DynamicProxy dynamicProxy = new DynamicProxy(new WorkerClientProxy(serverWorker));
+                    LocalWorker clientworker = (LocalWorker) dynamicProxy.bind(LocalWorker.class);
+                    waitingWorkers[index] = clientworker;
                     index += 1;
                 }
             }

@@ -26,7 +26,7 @@ public class TimerUtil {
             public void run() {
                 try {
                     localPark.heartbeat(workerHost, workerPost, workerName);
-                    LogUtil.info("WorkerTimerTask start");
+//                    LogUtil.info("WorkerTimerTask start");
                 } catch (RemoteException e) {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }

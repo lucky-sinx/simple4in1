@@ -5,11 +5,11 @@ import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class WorkerService implements Serializable {
+public class WorkerServiceProxy implements Serializable {
     Worker worker;
     private final Lock lk = new ReentrantLock();
 
-    public WorkerService(Worker worker) {
+    public WorkerServiceProxy(Worker worker) {
         this.worker = worker;
     }
 
