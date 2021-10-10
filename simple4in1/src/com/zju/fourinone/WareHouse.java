@@ -7,7 +7,7 @@ public class WareHouse extends LinkedHashMap {
     public final static int READY = 1;
     public final static int EXCEPTION = -1;
     int status = READY;
-    boolean mark;
+    boolean mark = true;
 
     public WareHouse() {
         super();
@@ -23,8 +23,12 @@ public class WareHouse extends LinkedHashMap {
         this.put(k, v);
     }
 
-    synchronized void setReady() {
-        this.status = READY;
+    public int getStatus() {
+        return status;
+    }
+
+    synchronized void setStatus(int status) {
+        this.status = status;
     }
 
     public synchronized boolean isReady() {

@@ -49,7 +49,18 @@ class MyCT extends Contractor {
         LocalWorker[] workers = getWaitingWorkers("test");
         WareHouse input = new WareHouse("key", "hello");
         for (LocalWorker worker : workers) {
-            System.out.println(worker.doTask(input));
+            WareHouse output = worker.doTask(input);
+            System.out.println("等待工人结果返回");
+            while (true) {
+                if (output.getStatus() == WareHouse.READY) {
+                    System.out.println("Worker 执行完成：");
+                    System.out.println(output);
+                    break;
+                } else if (output.getStatus() == WareHouse.EXCEPTION) {
+                    System.out.println("Worker 执行失败");
+                    break;
+                }
+            }
         }
     }
 }
