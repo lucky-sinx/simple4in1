@@ -9,8 +9,8 @@ public class WorkerClientProxy {
         this.worker = worker;
     }
 
-    public void doTask() throws RemoteException {
+    public WareHouse doTask(WareHouse input) throws RemoteException {
         System.out.println("多线程代理远程worker");
-        worker.doTask();
+        return worker.doTask(input);
     }
 }

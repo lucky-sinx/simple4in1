@@ -2,6 +2,7 @@ package test;
 
 import com.zju.fourinone.Contractor;
 import com.zju.fourinone.LocalWorker;
+import com.zju.fourinone.WareHouse;
 import com.zju.fourinone.Worker;
 import org.junit.Test;
 
@@ -29,14 +30,16 @@ public class WorkerMain {
 
 class MyWK extends Worker {
     @Override
-    public void doTask() {
-//        System.out.println("=====================================");
-//        System.out.println(this + "(" + this.getClass().toString() + "):DoTask");
-//        System.out.println("=====================================");
+    public WareHouse doTask(WareHouse input) {
+        System.out.println("=====================================");
+        System.out.println("input:" + input.toString());
         System.out.println("请输入一个字符：");
         Scanner sc = new Scanner(System.in);
         char c;
         c = sc.next().charAt(0);//读取字符串的第一个字母
+        System.out.println("第一个字符是" + c);
+        System.out.println("=====================================");
+        return new WareHouse("key", c);
     }
 }
 
@@ -44,8 +47,9 @@ class MyCT extends Contractor {
     @Override
     public void giveTask() throws RemoteException {
         LocalWorker[] workers = getWaitingWorkers("test");
+        WareHouse input = new WareHouse("key", "hello");
         for (LocalWorker worker : workers) {
-            worker.doTask();
+            System.out.println(worker.doTask(input));
         }
     }
 }

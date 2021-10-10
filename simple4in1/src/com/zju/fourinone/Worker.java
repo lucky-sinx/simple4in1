@@ -6,7 +6,8 @@ package com.zju.fourinone;
  */
 public class Worker extends Service implements LocalWorker {
     @Override
-    public void doTask() {
+    public WareHouse doTask(WareHouse input) {
+        return null;
     }
 
     @Override

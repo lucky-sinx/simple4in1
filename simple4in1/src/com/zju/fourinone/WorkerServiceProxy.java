@@ -13,12 +13,14 @@ public class WorkerServiceProxy implements Serializable {
         this.worker = worker;
     }
 
-    public void doTask() {
+    public WareHouse doTask(WareHouse input) {
+        WareHouse output = new WareHouse();
         try {
             this.lk.lock();
-            this.worker.doTask();
+            output = this.worker.doTask(input);
         } finally {
             this.lk.unlock();
         }
+        return output;
     }
 }
