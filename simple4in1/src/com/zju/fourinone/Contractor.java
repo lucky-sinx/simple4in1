@@ -13,6 +13,10 @@ public class Contractor {
 
     }
 
+    public WareHouse giveTask(WareHouse input) throws RemoteException{
+        return null;
+    }
+
     protected static LocalWorker[] getWaitingWorkers(String workerName) {
         Map<String, Map<String, Object>> workersInfo;
         LocalWorker[] waitingWorkers = null;

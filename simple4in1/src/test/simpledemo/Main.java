@@ -1,4 +1,4 @@
-package test;
+package test.simpledemo;
 
 import com.zju.fourinone.Context;
 
