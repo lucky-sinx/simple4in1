@@ -30,7 +30,7 @@ public class Context {
             TimerUtil.startParkTimerTask(park);
             LogUtil.info("[Fourinone] Park has been started");
         } catch (RemoteException e) {
-            LogUtil.severe(String.format("[Context] [startPark] Park(%s%s%s) start fail.\n%s",
+            LogUtil.severe(String.format("[Context] [startPark] Park(%s:%s:%s) start fail.\n%s",
                     host, port, name, e.getMessage()));
         }
     }
@@ -42,7 +42,7 @@ public class Context {
             HttpUtil.startHttpServer(host, port, 0);
             LogUtil.info("[Fourinone] Web has been started");
         } catch (IOException e) {
-            LogUtil.severe(String.format("[Context] [startWeb] Web(%s%s) start fail.\n%s",
+            LogUtil.severe(String.format("[Context] [startWeb] Web(%s:%s) start fail.\n%s",
                     host, port, e.getMessage()));
         }
     }
@@ -135,37 +135,40 @@ public class Context {
 
 
     public static LocalPark getPark() {
+        String host = Config.getParkHost();
         int port = Config.getParkPort();
         String name = Config.getParkName();
         try {
             return (LocalPark) RegistryUtil.getRegistry(port, name);
         } catch (NotBoundException | RemoteException e) {
-            LogUtil.severe(String.format("[Context] [getPark] connect Park(localhost:%s:%s) fail.\n%s",
-                    port, name, e.getMessage()));
+            LogUtil.severe(String.format("[Context] [getPark] connect Park(%s:%s:%s) fail.\n%s",
+                    host, port, name, e.getMessage()));
             return null;
         }
     }
 
     public static LocalFileSystem getFileSystem() {
+        String host = Config.getFileSystemLBHost();
         int port = Config.getFileSystemLBPort();
         String name = Config.getFileSystemLBName();
         try {
             return (LocalFileSystem) RegistryUtil.getRegistry(port, name);
         } catch (NotBoundException | RemoteException e) {
-            LogUtil.severe(String.format("[Context] [getFileSystem] connect FileSystem(localhost:%s:%s) fail.\n%s",
-                    port, name, e.getMessage()));
+            LogUtil.severe(String.format("[Context] [getFileSystem] connect FileSystem(%s:%s:%s) fail.\n%s",
+                    host, port, name, e.getMessage()));
             return null;
         }
     }
 
     public static LocalCache getCache() {
+        String host = Config.getCacheRoutHost();
         int port = Config.getCacheRoutPort();
         String name = Config.getCacheRoutName();
         try {
             return (LocalCache) RegistryUtil.getRegistry(port, name);
         } catch (NotBoundException | RemoteException e) {
-            LogUtil.severe(String.format("[Context] [getCache] connect Cache(localhost:%s:%s) fail.\n%s",
-                    port, name, e.getMessage()));
+            LogUtil.severe(String.format("[Context] [getCache] connect Cache(%s:%s:%s) fail.\n%s",
+                    host, port, name, e.getMessage()));
             return null;
         }
     }

@@ -19,7 +19,6 @@ public class Park extends Service implements LocalPark {
         this.setHost(host);
         this.setPort(port);
         this.setName(name);
-        LogUtil.info("Park start");
     }
 
     public void create(String host, int port, String name) {
