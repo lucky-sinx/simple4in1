@@ -63,7 +63,7 @@ public class Context {
         }
     }
 
-    private static void startFileSystem() throws RemoteException {
+    public static FileSystemLB startFileSystem() throws RemoteException {
         String name = Config.getFileSystemLBName();
         String host = Config.getFileSystemLBHost();
         int port = Config.getFileSystemLBPort();
@@ -95,5 +95,6 @@ public class Context {
         }
         LogUtil.info("FileSystems all have been started.");
         LogUtil.info("FileSystem has been started.");
+        return fileSystemLB;
     }
 }

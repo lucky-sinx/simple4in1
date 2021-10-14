@@ -16,6 +16,17 @@
 		<ALWAYSTRYLEADER>false</ALWAYSTRYLEADER>
 		<STARTWEBAPP>true</STARTWEBAPP>
 	</PROPSROW>
+	<PROPSROW DESC="WEB">
+		<HOST>localhost</HOST>
+		<PORT>9080</PORT>
+		<USERS>admin:admin,guest:123456,test:test</USERS>
+	</PROPSROW>
+	<PROPSROW DESC="FILESYSTEM">
+		<LBNAME>FileSystemLB</LBNAME>
+		<LBHOST>localhost</LBHOST>
+		<LBPORT>8001</LBPORT>
+		<SERVERS>localhost:8002:FileSystem1,localhost:8003:FileSystem2</SERVERS>
+	</PROPSROW>
 	<PROPSROW DESC="WORKER">
 		<HOST>localhost</HOST>
 		<PORT>2088</PORT>

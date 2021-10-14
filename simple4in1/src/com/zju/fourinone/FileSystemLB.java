@@ -16,7 +16,7 @@ public class FileSystemLB extends Service implements LocalLB {
     private final List<String> fileSystems = Config.getFileSystemServers();
     private int nextFileSystemIndex = 0;
 
-    private enum FileOperation {
+    public enum FileOperation {
         EXISTS("exists"),
         ISFILE("isFile"),
         ISDIRECTORY("isDirectory"),
@@ -55,7 +55,7 @@ public class FileSystemLB extends Service implements LocalLB {
      * @return 操作文件的结果
      */
     public Object invoke(FileOperation fileOperation, String filePath) {
-        if (!fileOperation.equals(FileOperation.WRITE)) {
+        if (fileOperation.equals(FileOperation.WRITE)) {
             LogUtil.warning("[FileSystemLB] [invoke] fileOperation(write) needs param(content).");
             return null;
         }
