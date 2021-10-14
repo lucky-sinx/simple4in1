@@ -1,5 +1,6 @@
 package com.zju.fourinone;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class Contractor {
                     index += 1;
                 }
             }
-        } catch (RemoteException e) {
+        } catch (RemoteException | NotBoundException e) {
             LogUtil.severe("[Contractor] [getWaitingWorkers] " + e.getClass() + e.getMessage());
         }
         return waitingWorkers;

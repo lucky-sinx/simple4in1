@@ -8,9 +8,9 @@ import java.rmi.RemoteException;
 public class Main {
     public static void main(String[] args) throws RemoteException {
 //        Context.startPark();
-        FileSystemLB fileSystemLB  =Context.startFileSystem();
-        if ((boolean) fileSystemLB.invoke(FileSystemLB.FileOperation.EXISTS,"config.xml")) {
-            System.out.println("exists");
-        }
+//        FileSystemLB fileSystemLB  =Context.startFileSystem();
+//        if ((boolean) fileSystemLB.invoke(FileSystemLB.FileOperation.EXISTS,"config.xml")) {
+//            System.out.println("exists");
+//        }
     }
 }

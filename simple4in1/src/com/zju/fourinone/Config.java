@@ -6,20 +6,18 @@ import java.util.Properties;
 
 /**
  * 理解：
- * =ConfigContext
+ * = ConfigContext
  */
 public class Config {
     private final static String configFile = "config.xml";
 
     private static String getConfig(String name, String prop) {
-        XmlReaderUtil xmlUtil = new XmlReaderUtil();
-        List<Properties> propsList = xmlUtil.getXmlPropsByFile(configFile, name, null);
+        List<Properties> propsList = XmlUtil.getXmlPropsByFile(configFile, name, null);
         String res = null;
         if (propsList != null && propsList.size() > 0) {
             Properties props = propsList.get(0);
             res = props.getProperty(prop);
         }
-
         return res;
     }
 
@@ -35,7 +33,9 @@ public class Config {
         return getConfig("PARK", "NAME");
     }
 
-    public static Long getHeartbeatTime(){return Long.parseLong(getConfig("PARK","HEARTBEATTIME"));}
+    public static Long getHeartbeatTime() {
+        return Long.parseLong(getConfig("PARK", "HEARTBEATTIME"));
+    }
 
     public static String getWorkerHost() {
         return getConfig("WORKER", "HOST");
@@ -73,4 +73,19 @@ public class Config {
         return Arrays.asList(getConfig("FILESYSTEM", "SERVERS").split(","));
     }
 
+    public static String getCacheRoutHost() {
+        return getConfig("CACHE", "ROUTEHOST");
+    }
+
+    public static int getCacheRoutPort() {
+        return Integer.parseInt(getConfig("CACHE", "ROUTEPORT"));
+    }
+
+    public static String getCacheRoutName() {
+        return getConfig("CACHE", "ROUTENAME");
+    }
+
+    public static List<String> getCacheServers() {
+        return Arrays.asList(getConfig("CACHE", "SERVERS").split(","));
+    }
 }

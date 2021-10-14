@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class WordCountDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         WordCountWorker wk1 = new WordCountWorker();
         wk1.startWorker("localhost", 8001, "wordcount");
         WordCountWorker wk2 = new WordCountWorker();

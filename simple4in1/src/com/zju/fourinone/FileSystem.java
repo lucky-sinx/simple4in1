@@ -100,7 +100,7 @@ public class FileSystem extends Service implements LocalFileSystem {
             }
             fileInputStream.close();
         } catch (IOException e) {
-            LogUtil.warning(String.format("[FileSystem] [read] FileSystem(%s:%s:%s) read file(%s) fail.\n%s",
+            LogUtil.severe(String.format("[FileSystem] [read] FileSystem(%s:%s:%s) read file(%s) fail.\n%s",
                     getHost(), getPort(), getName(), filePath, e.getMessage()));
         }
         return res.toString();
@@ -114,7 +114,7 @@ public class FileSystem extends Service implements LocalFileSystem {
             fileOutputStream.write(content.getBytes());
             fileOutputStream.close();
         } catch (IOException e) {
-            LogUtil.warning(String.format("[FileSystem] [write] FileSystem(%s:%s:%s) write file(%s) fail with content(%s).\n%s",
+            LogUtil.severe(String.format("[FileSystem] [write] FileSystem(%s:%s:%s) write file(%s) fail with content(%s).\n%s",
                     getHost(), getPort(), getName(), filePath, content, e.getMessage()));
         }
     }
