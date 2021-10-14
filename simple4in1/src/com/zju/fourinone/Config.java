@@ -1,5 +1,6 @@
 package com.zju.fourinone;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -43,4 +44,33 @@ public class Config {
     public static int getWorkerPort() {
         return Integer.parseInt(getConfig("WORKER", "PORT"));
     }
+
+    public static String getWebHost() {
+        return getConfig("WEB", "HOST");
+    }
+
+    public static int getWebPort() {
+        return Integer.parseInt(getConfig("WEB", "PORT"));
+    }
+
+    public static String[] getWebUsers() {
+        return getConfig("WEB", "USERS").split(",");
+    }
+
+    public static String getFileSystemLBHost() {
+        return getConfig("FILESYSTEM", "LBHOST");
+    }
+
+    public static int getFileSystemLBPort() {
+        return Integer.parseInt(getConfig("FILESYSTEM", "LBPORT"));
+    }
+
+    public static String getFileSystemLBName() {
+        return getConfig("FILESYSTEM", "LBNAME");
+    }
+
+    public static List<String> getFileSystemServers() {
+        return Arrays.asList(getConfig("FILESYSTEM", "SERVERS").split(","));
+    }
+
 }

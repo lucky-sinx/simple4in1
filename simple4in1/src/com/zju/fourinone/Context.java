@@ -1,6 +1,8 @@
 package com.zju.fourinone;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * 理解：
@@ -46,5 +48,52 @@ public class Context {
         } catch (RemoteException e) {
             LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
         }
+    }
+
+    private static void startWeb() throws IOException {
+        String host = Config.getWebHost();
+        int port = Config.getWebPort();
+        try {
+            HttpUtil.startHttpServer(host, port, 0);
+            LogUtil.info("Web has been started");
+        } catch (IOException e) {
+            LogUtil.severe(String.format("[Context] [startWeb] Web(%s%s) start fail.\n%s",
+                    host, port, e.getMessage()));
+            throw e;
+        }
+    }
+
+    private static void startFileSystem() throws RemoteException {
+        String name = Config.getFileSystemLBName();
+        String host = Config.getFileSystemLBHost();
+        int port = Config.getFileSystemLBPort();
+        FileSystemLB fileSystemLB = new FileSystemLB(host, port, name);
+        try {
+            RegistryUtil.createRegistry(port, name, fileSystemLB);
+            LogUtil.info("FileSystemLB has been started");
+        } catch (Exception e) {
+            LogUtil.severe(String.format("[Context] [startFileSystem] FileSystemLB(%s:%s:%s) start fail.\n%s",
+                    host, port, name, e.getMessage()));
+            throw e;
+        }
+
+        List<String> fileSystems = Config.getFileSystemServers();
+        for (String fileSystemInfo : fileSystems) {
+            String[] splits = fileSystemInfo.split(":");
+            String fileSystemHost = splits[0];
+            int fileSystemPort = Integer.parseInt(splits[1]);
+            String fileSystemName = splits[2];
+            FileSystem fileSystem = new FileSystem(fileSystemHost, fileSystemPort, fileSystemName);
+            try {
+                RegistryUtil.createRegistry(fileSystemPort, fileSystemName, fileSystem);
+                LogUtil.info(String.format("FileSystem %s has been started", fileSystemName));
+            } catch (Exception e) {
+                LogUtil.severe(String.format("[Context] [start] FileSystem(%s) createRegistry fail.\n%s",
+                        fileSystemInfo, e.getMessage()));
+                throw e;
+            }
+        }
+        LogUtil.info("FileSystems all have been started.");
+        LogUtil.info("FileSystem has been started.");
     }
 }
