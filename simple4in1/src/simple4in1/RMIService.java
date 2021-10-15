@@ -53,18 +53,16 @@ public class RMIService {
         createRegistry(worker.getPort(), worker.getName(), myworker);
         //获取ParkService
         try {
-            ParkLocal parkLocal = getPark();
-            parkLocal.create(worker.getHost(), worker.getPort(), worker.getName());
             ParkLocal parkRemote = getPark();
             if (parkRemote != null) {
                 try {
-                    parkRemote.create(worker.getHost(), worker.getPort(), worker.getName());
+                    parkRemote.createWorker(worker.getHost(), worker.getPort(), worker.getName());
                 } catch (RemoteException e) {
                     LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
                 }
                 TimerUtil.startWorkerTimerTask(parkRemote, worker.getHost(), worker.getPort(), worker.getName());
             }
-            System.out.println(parkLocal.get(worker.getName()));
+            System.out.println(parkRemote.get(worker.getName()));
         } catch (RemoteException e) {
             LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
         }
@@ -76,6 +74,23 @@ public class RMIService {
 
     public static void startFileServer(FileServer fileServer) {
         createRegistry(Config.getFileSystemLBPort(), "FileServer", fileServer);
+        //获取ParkService
+        try {
+            ParkLocal parkLocal = getPark();
+            parkLocal.createFileServer(fileServer.getHost());
+            ParkLocal parkRemote = getPark();
+            if (parkRemote != null) {
+                try {
+                    parkLocal.createFileServer(fileServer.getHost());
+                } catch (RemoteException e) {
+                    LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
+                }
+                TimerUtil.startFileServerTimerTask(parkLocal,fileServer.getHost());
+            }
+            System.out.println(parkLocal.get(fileServer.getHost()));
+        } catch (RemoteException e) {
+            LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
+        }
     }
 
     public static LocalFileSystem getFileServer(String host) {

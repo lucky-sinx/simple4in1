@@ -7,6 +7,10 @@ public class FileServer extends FileUtil {
         this.host = host;
     }
 
+    public String getHost() {
+        return host;
+    }
+
     public void startFileServer(FileServer this) {
         RMIService.startFileServer(this);
     }
