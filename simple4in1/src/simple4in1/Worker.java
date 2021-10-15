@@ -1,4 +1,4 @@
-package com.zju.fourinone;
+package simple4in1;
 
 /**
  * 理解：

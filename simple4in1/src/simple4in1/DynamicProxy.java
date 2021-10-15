@@ -1,4 +1,4 @@
-package com.zju.fourinone;
+package simple4in1;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

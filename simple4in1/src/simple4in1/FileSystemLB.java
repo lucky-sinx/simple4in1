@@ -1,8 +1,6 @@
-package com.zju.fourinone;
+package simple4in1;
 
 import java.lang.reflect.InvocationTargetException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 

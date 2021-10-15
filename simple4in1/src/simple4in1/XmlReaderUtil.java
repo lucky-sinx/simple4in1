@@ -1,4 +1,4 @@
-package com.zju.fourinone;
+package simple4in1;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

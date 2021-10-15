@@ -1,9 +1,9 @@
 package test.simpledemo;
 
-import com.zju.fourinone.Contractor;
-import com.zju.fourinone.LocalWorker;
-import com.zju.fourinone.WareHouse;
-import com.zju.fourinone.Worker;
+import simple4in1.Contractor;
+import simple4in1.LocalWorker;
+import simple4in1.WareHouse;
+import simple4in1.Worker;
 import org.junit.Test;
 
 import java.rmi.RemoteException;
