@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * =Park*
  */
 // implements ParkInterface为什么去掉也可以反射???
-public class Park extends Service implements LocalPark {
+public class Park extends Service implements ParkLocal {
     private final Map<String, Map<String, Map<String, Object>>> workers = new HashMap<>();
     private final static long timeout = Config.getHeartbeatTime() * 2;
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();

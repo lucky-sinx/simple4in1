@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * 使用RMI服务
  */
-public class RegistryUtil {
+public class RMIUtil {
 
     /**
      * 注册本地进程

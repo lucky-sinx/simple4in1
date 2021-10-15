@@ -20,12 +20,12 @@ public class TimerUtil {
         LogUtil.info("ParkTimerTask start");
     }
 
-    public static void startWorkerTimerTask(LocalPark localPark, String workerHost, int workerPost, String workerName) {
+    public static void startWorkerTimerTask(ParkLocal parkLocal, String workerHost, int workerPost, String workerName) {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    localPark.heartbeat(workerHost, workerPost, workerName);
+                    parkLocal.heartbeat(workerHost, workerPost, workerName);
 //                    LogUtil.info("WorkerTimerTask start");
                 } catch (RemoteException e) {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());

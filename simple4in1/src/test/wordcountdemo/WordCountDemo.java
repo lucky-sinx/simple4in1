@@ -1,7 +1,7 @@
 package test.wordcountdemo;
 
 import simple4in1.Contractor;
-import simple4in1.LocalWorker;
+import simple4in1.WorkerLocal;
 import simple4in1.WareHouse;
 import simple4in1.Worker;
 import org.junit.Test;
@@ -16,11 +16,11 @@ import java.util.Iterator;
 
 public class WordCountDemo {
     public static void main(String[] args) {
-        WordCountWorker wk1 = new WordCountWorker();
+        WordCountWorkerLocal wk1 = new WordCountWorkerLocal();
         wk1.startWorker("localhost", 8001, "wordcount");
-        WordCountWorker wk2 = new WordCountWorker();
+        WordCountWorkerLocal wk2 = new WordCountWorkerLocal();
         wk1.startWorker("localhost", 8002, "wordcount");
-        WordCountWorker wk3 = new WordCountWorker();
+        WordCountWorkerLocal wk3 = new WordCountWorkerLocal();
         wk1.startWorker("localhost", 8003, "wordcount");
     }
 
@@ -42,7 +42,7 @@ public class WordCountDemo {
 
 }
 
-class WordCountWorker extends Worker {
+class WordCountWorkerLocal extends Worker {
     public WareHouse doTask(WareHouse inhouse) {
         System.out.println(Thread.currentThread());
         String filepath = (String) inhouse.get("filepath");
@@ -72,7 +72,7 @@ class WordCountContractor extends Contractor {
     @Override
     public WareHouse giveTask(WareHouse wareHouse) throws RemoteException {
         String[] filepath = (String[]) wareHouse.get("filepath");
-        LocalWorker[] wks = getWaitingWorkers("wordcount");
+        WorkerLocal[] wks = getWaitingWorkers("wordcount");
         WareHouse[] hmarr = new WareHouse[3];
         HashMap<String, Integer> wordcount = new HashMap<String, Integer>();
         for (int j = 0; j < 3; ) {

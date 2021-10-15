@@ -3,9 +3,9 @@ package simple4in1;
 import java.rmi.RemoteException;
 
 public class WorkerClientProxy {
-    LocalWorker worker;
+    WorkerLocal worker;
 
-    public WorkerClientProxy(LocalWorker worker) {
+    public WorkerClientProxy(WorkerLocal worker) {
         this.worker = worker;
     }
 

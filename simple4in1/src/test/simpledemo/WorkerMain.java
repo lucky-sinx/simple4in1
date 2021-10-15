@@ -1,7 +1,7 @@
 package test.simpledemo;
 
 import simple4in1.Contractor;
-import simple4in1.LocalWorker;
+import simple4in1.WorkerLocal;
 import simple4in1.WareHouse;
 import simple4in1.Worker;
 import org.junit.Test;
@@ -46,9 +46,9 @@ class MyWK extends Worker {
 class MyCT extends Contractor {
     @Override
     public void giveTask() throws RemoteException {
-        LocalWorker[] workers = getWaitingWorkers("test");
+        WorkerLocal[] workers = getWaitingWorkers("test");
         WareHouse input = new WareHouse("key", "hello");
-        for (LocalWorker worker : workers) {
+        for (WorkerLocal worker : workers) {
             WareHouse output = worker.doTask(input);
             System.out.println("等待工人结果返回");
             while (true) {

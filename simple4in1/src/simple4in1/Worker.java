@@ -4,7 +4,7 @@ package simple4in1;
  * 理解：
  * =Worker*
  */
-public class Worker extends Service implements LocalWorker {
+public class Worker extends Service implements WorkerLocal {
     @Override
     public WareHouse doTask(WareHouse input) {
         return null;

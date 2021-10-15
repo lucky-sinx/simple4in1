@@ -17,23 +17,23 @@ public class Contractor {
         return null;
     }
 
-    protected static LocalWorker[] getWaitingWorkers(String workerName) {
+    protected static WorkerLocal[] getWaitingWorkers(String workerName) {
         Map<String, Map<String, Object>> workersInfo;
-        LocalWorker[] waitingWorkers = null;
+        WorkerLocal[] waitingWorkers = null;
         try {
             workersInfo = Context.getPark().get(workerName);
             if (workersInfo == null) {
                 LogUtil.warning("[Contractor] [getWaitingWorkers] getPark null");
             } else {
-                waitingWorkers = new LocalWorker[workersInfo.size()];
+                waitingWorkers = new WorkerLocal[workersInfo.size()];
                 int index = 0;
                 Iterator<Map.Entry<String, Map<String, Object>>> iterator = workersInfo.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<String, Map<String, Object>> next = iterator.next();
                     Map<String, Object> info = next.getValue();
-                    LocalWorker serverWorker = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
+                    WorkerLocal serverWorker = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
                     DynamicProxy dynamicProxy = new DynamicProxy(new WorkerClientProxy(serverWorker));
-                    LocalWorker clientworker = (LocalWorker) dynamicProxy.bind(LocalWorker.class);
+                    WorkerLocal clientworker = (WorkerLocal) dynamicProxy.bind(WorkerLocal.class);
                     waitingWorkers[index] = clientworker;
                     index += 1;
                 }

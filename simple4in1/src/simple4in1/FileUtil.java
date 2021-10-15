@@ -9,8 +9,8 @@ import java.io.IOException;
  * 理解:
  * = Fttp*
  */
-public class FileSystem extends Service implements LocalFileSystem {
-    public FileSystem(String host, int port, String name) {
+public class FileUtil extends Service implements LocalFileSystem {
+    public FileUtil(String host, int port, String name) {
         this.host = host;
         this.port = port;
         this.name = name;
