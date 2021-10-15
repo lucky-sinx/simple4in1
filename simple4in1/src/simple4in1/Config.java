@@ -62,7 +62,7 @@ public class Config {
     }
 
     public static int getFileSystemLBPort() {
-        return Integer.parseInt(getConfig("FILESYSTEM", "LBPORT"));
+        return Integer.parseInt(getConfig("FILESYSTEM", "PORT"));
     }
 
     public static String getFileSystemLBName() {

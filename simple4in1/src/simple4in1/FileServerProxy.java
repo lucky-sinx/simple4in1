@@ -1,6 +1,6 @@
 package simple4in1;
 
-public class FileSyetemProxy {
+public class FileServerProxy {
     LocalFileSystem fs;
 
 }

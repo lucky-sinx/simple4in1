@@ -23,7 +23,7 @@ public class Worker extends Service implements WorkerLocal {
         this.setHost(host);
         this.setPort(port);
         this.setName(name);
-        Context.startWorker(this);
+        RMIService.startWorker(this);
         LogUtil.info("Worker start");
     }
 }

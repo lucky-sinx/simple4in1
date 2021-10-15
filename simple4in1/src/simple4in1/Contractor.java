@@ -21,7 +21,7 @@ public class Contractor {
         Map<String, Map<String, Object>> workersInfo;
         WorkerLocal[] waitingWorkers = null;
         try {
-            workersInfo = Context.getPark().get(workerName);
+            workersInfo = RMIService.getPark().get(workerName);
             if (workersInfo == null) {
                 LogUtil.warning("[Contractor] [getWaitingWorkers] getPark null");
             } else {
@@ -31,7 +31,7 @@ public class Contractor {
                 while (iterator.hasNext()) {
                     Map.Entry<String, Map<String, Object>> next = iterator.next();
                     Map<String, Object> info = next.getValue();
-                    WorkerLocal serverWorker = Context.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
+                    WorkerLocal serverWorker = RMIService.getWorker((String) info.get("host"), (Integer) info.get("port"), (String) info.get("name"));
                     DynamicProxy dynamicProxy = new DynamicProxy(new WorkerClientProxy(serverWorker));
                     WorkerLocal clientworker = (WorkerLocal) dynamicProxy.bind(WorkerLocal.class);
                     waitingWorkers[index] = clientworker;

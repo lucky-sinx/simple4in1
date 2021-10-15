@@ -5,17 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * 理解:
- * = Fttp*
- */
-public class FileUtil extends Service implements LocalFileSystem {
-    public FileUtil(String host, int port, String name) {
-        this.host = host;
-        this.port = port;
-        this.name = name;
-    }
-
+public class FileUtil implements LocalFileSystem {
     @Override
     public boolean exists(String filePath) {
         File file = new File(filePath);
@@ -100,8 +90,8 @@ public class FileUtil extends Service implements LocalFileSystem {
             }
             fileInputStream.close();
         } catch (IOException e) {
-            LogUtil.warning(String.format("[FileSystem] [read] FileSystem(%s:%s:%s) read file(%s) fail.\n%s",
-                    getHost(), getPort(), getName(), filePath, e.getMessage()));
+            LogUtil.warning(String.format("[FileSystem] [read] FileSystem read file(%s) fail.\n%s",
+                    filePath, e.getMessage()));
         }
         return res.toString();
     }
@@ -114,8 +104,8 @@ public class FileUtil extends Service implements LocalFileSystem {
             fileOutputStream.write(content.getBytes());
             fileOutputStream.close();
         } catch (IOException e) {
-            LogUtil.warning(String.format("[FileSystem] [write] FileSystem(%s:%s:%s) write file(%s) fail with content(%s).\n%s",
-                    getHost(), getPort(), getName(), filePath, content, e.getMessage()));
+            LogUtil.warning(String.format("[FileSystem] [write] FileSystem write file(%s) fail with content(%s).\n%s",
+                    filePath, content, e.getMessage()));
         }
     }
 }
