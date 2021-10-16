@@ -45,6 +45,7 @@ public class Park extends Service implements ParkLocal {
             info.put("time", System.currentTimeMillis());
             node.put(host + ":" + port + ":" + name, info);
         }
+        LogUtil.info(String.format("[Worker]%s create", host + ":" + port + ":" + name));
         wlk.unlock();
     }
 
@@ -53,6 +54,7 @@ public class Park extends Service implements ParkLocal {
         wlk.lock();
 //        Object node = fileServer.get(fileServerHost);
         fileServer.put(fileServerHost, System.currentTimeMillis());
+        LogUtil.info(String.format("[FileServer]%s create", fileServerHost));
         wlk.unlock();
     }
 
@@ -82,11 +84,7 @@ public class Park extends Service implements ParkLocal {
         if (node == null) {
             LogUtil.warning("[Park] [heartbeat] file server get node " + name + "null");
         } else {
-            if (node == null) {
-                LogUtil.warning("[Park] [heartbeat] node get info " + host + ":" + port + ":" + name + "null");
-            } else {
-                fileServer.put(fileServerHost, System.currentTimeMillis());
-            }
+            fileServer.put(fileServerHost, System.currentTimeMillis());
         }
         wlk.unlock();
     }
@@ -119,7 +117,7 @@ public class Park extends Service implements ParkLocal {
                 Map<String, Object> info = next2.getValue();
                 if (System.currentTimeMillis() - (Long) info.get("time") > timeout) {
                     iterator2.remove();
-                    LogUtil.warning(next2.getKey() + " remove");
+                    LogUtil.warning(String.format("[Worker]%s remove", next2.getKey()));
                 }
             }
         }
@@ -128,7 +126,7 @@ public class Park extends Service implements ParkLocal {
             Map.Entry<String, Object> next = iterator.next();
             if (System.currentTimeMillis() - (Long) next.getValue() > timeout) {
                 iterator.remove();
-                LogUtil.warning(next.getKey() + "fileServer remove");
+                LogUtil.warning(String.format("[FileServer]%s remove", next.getKey()));
             }
         }
     }

@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 
 public class TestFileServer {
     public static void main(String[] args) {
-        FileServer fileServer = new FileServer("localhost");
+        FileServer fileServer = new FileServer("192.168.10.1");
         fileServer.startFileServer();
     }
 

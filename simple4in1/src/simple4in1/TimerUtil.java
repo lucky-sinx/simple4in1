@@ -40,7 +40,7 @@ public class TimerUtil {
             public void run() {
                 try {
                     parkLocal.heartbeatfileserver(fileServerHost);
-                    LogUtil.info("WorkerTimerTask start");
+//                    LogUtil.info("WorkerTimerTask start");
                 } catch (RemoteException e) {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }

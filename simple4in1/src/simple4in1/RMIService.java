@@ -48,50 +48,84 @@ public class RMIService {
     }
 
     public static void startWorker(Worker worker) {
-        DynamicProxy dynamicProxy = new DynamicProxy(new WorkerServiceProxy(worker));
-        WorkerLocal myworker = (WorkerLocal) dynamicProxy.bind(WorkerLocal.class);
-        createRegistry(worker.getPort(), worker.getName(), myworker);
-        //获取ParkService
         try {
+            DynamicProxy dynamicProxy = new DynamicProxy(new WorkerServiceProxy(worker));
+            WorkerLocal myworker = (WorkerLocal) dynamicProxy.bind(WorkerLocal.class);
+            createRegistry(worker.getPort(), worker.getName(), myworker);
+
             ParkLocal parkRemote = getPark();
-            if (parkRemote != null) {
-                try {
-                    parkRemote.createWorker(worker.getHost(), worker.getPort(), worker.getName());
-                } catch (RemoteException e) {
-                    LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
-                }
-                TimerUtil.startWorkerTimerTask(parkRemote, worker.getHost(), worker.getPort(), worker.getName());
-            }
-            System.out.println(parkRemote.get(worker.getName()));
-        } catch (RemoteException e) {
-            LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
+            parkRemote.createWorker(worker.getHost(), worker.getPort(), worker.getName());
+            LogUtil.info(String.format("[Worker]%s-%s-%s connect park success", worker.getHost(),
+                    worker.getPort(), worker.getName()));
+            TimerUtil.startWorkerTimerTask(parkRemote, worker.getHost(), worker.getPort(), worker.getName());
+            LogUtil.info(String.format("[Worker]%s-%s-%s start", worker.getHost(),
+                    worker.getPort(), worker.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.severe(String.format("[Worker]%s-%s-%s start fail", worker.getHost(),
+                    worker.getPort(), worker.getName()));
         }
     }
+//        DynamicProxy dynamicProxy = new DynamicProxy(new WorkerServiceProxy(worker));
+//        WorkerLocal myworker = (WorkerLocal) dynamicProxy.bind(WorkerLocal.class);
+//        createRegistry(worker.getPort(), worker.getName(), myworker);
+//        //获取ParkService
+//        try {
+//            ParkLocal parkRemote = getPark();
+//            if (parkRemote != null) {
+//                try {
+//                    parkRemote.createWorker(worker.getHost(), worker.getPort(), worker.getName());
+//                    LogUtil.info("");
+//                } catch (RemoteException e) {
+//                    LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
+//                }
+//                TimerUtil.startWorkerTimerTask(parkRemote, worker.getHost(), worker.getPort(), worker.getName());
+//            }
+////            System.out.println(parkRemote.get(worker.getName()));
+//        } catch (Exception e) {
+//            LogUtil.severe("[Context] [startWorker] " + e.getClass() + ": " + e.getMessage());
+//        }
+
 
 //    private static void startFileSystem() throws RemoteException {
 //
 //    }
 
     public static void startFileServer(FileServer fileServer) {
-        createRegistry(Config.getFileSystemLBPort(), "FileServer", fileServer);
         //获取ParkService
         try {
+            createRegistry(Config.getFileSystemLBPort(), "FileServer", fileServer);
+
             ParkLocal parkLocal = getPark();
+            LogUtil.info(String.format("[FileServer]%s connect park success", fileServer.getHost()));
             parkLocal.createFileServer(fileServer.getHost());
-            ParkLocal parkRemote = getPark();
-            if (parkRemote != null) {
-                try {
-                    parkLocal.createFileServer(fileServer.getHost());
-                } catch (RemoteException e) {
-                    LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
-                }
-                TimerUtil.startFileServerTimerTask(parkLocal,fileServer.getHost());
-            }
-            System.out.println(parkLocal.get(fileServer.getHost()));
-        } catch (RemoteException e) {
-            LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
+            TimerUtil.startFileServerTimerTask(parkLocal, fileServer.getHost());
+            LogUtil.info(String.format("[FileServer]%s start", fileServer.getHost()));
+        } catch (Exception e) {
+            LogUtil.severe(String.format("[FileServer]%s start fail", fileServer.getHost()));;
         }
     }
+
+
+//        createRegistry(Config.getFileSystemLBPort(), "FileServer", fileServer);
+//        //获取ParkService
+//        try {
+//            ParkLocal parkLocal = getPark();
+//            parkLocal.createFileServer(fileServer.getHost());
+//            ParkLocal parkRemote = getPark();
+//            if (parkRemote != null) {
+//                try {
+//                    parkLocal.createFileServer(fileServer.getHost());
+//                } catch (RemoteException e) {
+//                    LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
+//                }
+//                TimerUtil.startFileServerTimerTask(parkLocal, fileServer.getHost());
+//            }
+//            System.out.println(parkLocal.get(fileServer.getHost()));
+//        } catch (RemoteException e) {
+//            LogUtil.severe("[Context] [startFileServer] " + e.getClass() + ": " + e.getMessage());
+//        }
+//    }
 
     public static LocalFileSystem getFileServer(String host) {
         return (LocalFileSystem) getRegistry(host, Config.getFileSystemLBPort(), "FileServer");
