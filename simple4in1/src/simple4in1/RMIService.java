@@ -41,6 +41,7 @@ public class RMIService {
     public static void startPark() {
         String name = Config.getParkName();
         String host = Config.getParkHost();
+//        host = "192.168.10.100";
         int port = Config.getParkPort();
         Park park = new Park(host, port, name);
         createRegistry(port, name, park);
@@ -102,7 +103,8 @@ public class RMIService {
             TimerUtil.startFileServerTimerTask(parkLocal, fileServer.getHost());
             LogUtil.info(String.format("[FileServer]%s start", fileServer.getHost()));
         } catch (Exception e) {
-            LogUtil.severe(String.format("[FileServer]%s start fail", fileServer.getHost()));;
+            LogUtil.severe(String.format("[FileServer]%s start fail", fileServer.getHost()));
+            ;
         }
     }
 
