@@ -6,14 +6,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * 理解：
- * =Park*
- */
-// implements ParkInterface为什么去掉也可以反射???
 public class Park extends Service implements ParkLocal {
     private final Map<String, Map<String, Map<String, Object>>> workers = new HashMap<>();
     private final Map<String, Object> fileServer = new HashMap<>();
+    private final Map<String, Object> cacheServer = new HashMap<>();
     private final static long timeout = Config.getHeartbeatTime() * 2;
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();
 
@@ -58,17 +54,26 @@ public class Park extends Service implements ParkLocal {
         wlk.unlock();
     }
 
+    public void createCacheServer(String cacheServerId) {
+        Lock wlk = rwlk.writeLock();
+        wlk.lock();
+//        Object node = fileServer.get(fileServerHost);
+        cacheServer.put(cacheServerId, System.currentTimeMillis());
+        LogUtil.info(String.format("[CacheServer]%s create", cacheServerId));
+        wlk.unlock();
+    }
+
 
     public void heartbeatworker(String host, int port, String name) {
         Lock wlk = rwlk.writeLock();
         wlk.lock();
         Map<String, Map<String, Object>> node = workers.get(name);
         if (node == null) {
-            LogUtil.warning("[Park] [heartbeat] workers get node " + name + "null");
+            LogUtil.warning("[Park] [heartbeat] workers get node " + name + " null");
         } else {
             Map<String, Object> info = node.get(host + ":" + port + ":" + name);
             if (info == null) {
-                LogUtil.warning("[Park] [heartbeat] node get info " + host + ":" + port + ":" + name + "null");
+                LogUtil.warning("[Park] [heartbeat] node get info " + host + ":" + port + ":" + name + " null");
             } else {
                 info.put("time", System.currentTimeMillis());
             }
@@ -82,26 +87,22 @@ public class Park extends Service implements ParkLocal {
         Object node = fileServer.get(fileServerHost);
 //        System.out.println(node);
         if (node == null) {
-            LogUtil.warning("[Park] [heartbeat] file server get node " + name + "null");
+            LogUtil.warning("[Park] [heartbeat] file server get node " + fileServerHost + " null");
         } else {
             fileServer.put(fileServerHost, System.currentTimeMillis());
         }
         wlk.unlock();
     }
 
-    public void heartbeatcacheserver(String cacheServerHost) {
+    public void heartbeatcacheserver(String cacheServerId) {
         Lock wlk = rwlk.writeLock();
         wlk.lock();
-        Map<String, Map<String, Object>> node = workers.get(name);
+        Object node = cacheServer.get(cacheServerId);
+//        System.out.println(node);
         if (node == null) {
-            LogUtil.warning("[Park] [heartbeat] workers get node " + name + "null");
+            LogUtil.warning("[Park] [heartbeat] cache server get node " + cacheServerId + " null");
         } else {
-            Map<String, Object> info = node.get(host + ":" + port + ":" + name);
-            if (info == null) {
-                LogUtil.warning("[Park] [heartbeat] node get info " + host + ":" + port + ":" + name + "null");
-            } else {
-                info.put("time", System.currentTimeMillis());
-            }
+            cacheServer.put(cacheServerId, System.currentTimeMillis());
         }
         wlk.unlock();
     }
@@ -121,12 +122,20 @@ public class Park extends Service implements ParkLocal {
                 }
             }
         }
-        Iterator<Map.Entry<String, Object>> iterator = fileServer.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Object> next = iterator.next();
+        Iterator<Map.Entry<String, Object>> iterator3 = fileServer.entrySet().iterator();
+        while (iterator3.hasNext()) {
+            Map.Entry<String, Object> next = iterator3.next();
             if (System.currentTimeMillis() - (Long) next.getValue() > timeout) {
-                iterator.remove();
+                iterator3.remove();
                 LogUtil.warning(String.format("[FileServer]%s remove", next.getKey()));
+            }
+        }
+        Iterator<Map.Entry<String, Object>> iterator4 = cacheServer.entrySet().iterator();
+        while (iterator4.hasNext()) {
+            Map.Entry<String, Object> next = iterator4.next();
+            if (System.currentTimeMillis() - (Long) next.getValue() > timeout) {
+                iterator4.remove();
+                LogUtil.warning(String.format("[CacheServer]%s remove", next.getKey()));
             }
         }
     }
@@ -138,5 +147,9 @@ public class Park extends Service implements ParkLocal {
         res = workers.get(name);
         rlk.unlock();
         return res;
+    }
+
+    public static void main(String[] args) {
+        RMIService.startPark();
     }
 }

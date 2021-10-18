@@ -12,6 +12,8 @@ public interface ParkLocal extends Remote{
 
     void createFileServer(String host) throws RemoteException;
 
+    void createCacheServer(String id) throws RemoteException;
+
     void heartbeatworker(String host, int port, String name) throws RemoteException;
 
     void heartbeatfileserver(String host) throws RemoteException;

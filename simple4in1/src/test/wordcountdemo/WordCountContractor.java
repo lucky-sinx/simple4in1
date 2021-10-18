@@ -13,7 +13,7 @@ public class WordCountContractor extends Contractor {
     public static void main(String[] args)  throws RemoteException {
         WordCountContractor contractor = new WordCountContractor();
         long begin = (new Date()).getTime();
-        String dataPath = ".\\src\\test\\wordcountdemo\\";
+        String dataPath = "./src/test/wordcountdemo/";
         WareHouse result = contractor.giveTask(new WareHouse("filepath", new String[]{
                 new String(dataPath + "data1.txt"),
                 new String(dataPath + "data2.txt"),

@@ -25,7 +25,7 @@ public class WorkerClientProxy {
                 }
             }
         }).start();
-        System.out.println("多线程代理远程worker");
+//        System.out.println("多线程代理远程worker");
         return output;
     }
 }

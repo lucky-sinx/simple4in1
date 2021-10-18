@@ -33,6 +33,7 @@ public class RMIService {
             Registry registry = LocateRegistry.getRegistry(host, port);
             return registry.lookup(name);
         } catch (NotBoundException | RemoteException e) {
+            e.printStackTrace();
             LogUtil.severe("[RegistryUtil] [getRegistry] " + e.getClass() + ": " + e.getMessage());
         }
         return null;
@@ -104,7 +105,24 @@ public class RMIService {
             LogUtil.info(String.format("[FileServer]%s start", fileServer.getHost()));
         } catch (Exception e) {
             LogUtil.severe(String.format("[FileServer]%s start fail", fileServer.getHost()));
-            ;
+        }
+    }
+
+    public static void startCacheServer(CacheServer cacheServer) {
+        //获取ParkService
+        try {
+            createRegistry(cacheServer.getPort(), cacheServer.id, cacheServer);
+
+            ParkLocal parkLocal = getPark();
+            LogUtil.info(String.format("[CacheServer]%s connect park success", cacheServer.getId()));
+            parkLocal.createCacheServer(cacheServer.getId());
+
+//            TimerUtil.startFileServerTimerTask(parkLocal, cacheServer.getHost());
+            TimerUtil.startCacheServerTimerTask(parkLocal, cacheServer.getId());
+            LogUtil.info(String.format("[CacheServer]%s start", cacheServer.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.severe(String.format("[CacheServer]%s start fail", cacheServer.getId()));
         }
     }
 
@@ -140,4 +158,6 @@ public class RMIService {
     public static WorkerLocal getWorker(String host, int port, String workerName) {
         return (WorkerLocal) getRegistry(host, port, workerName);
     }
+
+
 }
