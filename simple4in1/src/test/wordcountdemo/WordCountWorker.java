@@ -35,8 +35,8 @@ public class WordCountWorker extends Worker {
         return new WareHouse("word", wordcount);
     }
     public static void main(String[] args) {
-//        WordCountWorkerLocal wk1 = new WordCountWorkerLocal();
-//        wk1.startWorker("192.168.44.1", 8001, "wordcount");
+        WordCountWorker wk1 = new WordCountWorker();
+        wk1.startWorker("192.168.44.1", 8001, "wordcount");
         WordCountWorker wk2 = new WordCountWorker();
         wk2.startWorker("192.168.44.1", 8002, "wordcount");
         WordCountWorker wk3 = new WordCountWorker();

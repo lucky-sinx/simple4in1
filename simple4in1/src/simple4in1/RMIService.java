@@ -159,5 +159,12 @@ public class RMIService {
         return (WorkerLocal) getRegistry(host, port, workerName);
     }
 
+    public static CacheServerLocal getCacheServer(String cacheServerId) {
+        String[] info = cacheServerId.split(":");
+        return getCacheServer(info[1], Integer.parseInt(info[2]), cacheServerId);
+    }
 
+    public static CacheServerLocal getCacheServer(String host, int port, String cacheName) {
+        return (CacheServerLocal) getRegistry(host, port, cacheName);
+    }
 }

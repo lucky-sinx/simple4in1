@@ -2,9 +2,9 @@
 <PROPSTABLE DESC="TABLENAME">
     <PROPSROW DESC="PARK">
         <NAME>Park</NAME>
-        <HOST>192.168.10.100</HOST>
+        <HOST>localhost</HOST>
         <PORT>1888</PORT>
-        <HEARTBEATTIME>500</HEARTBEATTIME>
+        <HEARTBEATTIME>500000</HEARTBEATTIME>
 
         <SERVICE>ParkService</SERVICE>
         <SERVERS>localhost:1888</SERVERS>

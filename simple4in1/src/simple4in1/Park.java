@@ -1,6 +1,8 @@
 package simple4in1;
 
 import javax.crypto.interfaces.PBEKey;
+import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -12,6 +14,7 @@ public class Park extends Service implements ParkLocal {
     private final Map<String, Object> cacheServer = new HashMap<>();
     private final static long timeout = Config.getHeartbeatTime() * 2;
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();
+    private final HashUtil hashCircle = new HashUtil();
 
     public Park(String host, int port, String name) {
         this.setHost(host);
@@ -59,6 +62,8 @@ public class Park extends Service implements ParkLocal {
         wlk.lock();
 //        Object node = fileServer.get(fileServerHost);
         cacheServer.put(cacheServerId, System.currentTimeMillis());
+        //将cache server的id添加到哈希环中
+        hashCircle.add(cacheServerId);
         LogUtil.info(String.format("[CacheServer]%s create", cacheServerId));
         wlk.unlock();
     }
@@ -134,6 +139,7 @@ public class Park extends Service implements ParkLocal {
         while (iterator4.hasNext()) {
             Map.Entry<String, Object> next = iterator4.next();
             if (System.currentTimeMillis() - (Long) next.getValue() > timeout) {
+                hashCircle.remove(next.getKey());
                 iterator4.remove();
                 LogUtil.warning(String.format("[CacheServer]%s remove", next.getKey()));
             }
@@ -147,6 +153,40 @@ public class Park extends Service implements ParkLocal {
         res = workers.get(name);
         rlk.unlock();
         return res;
+    }
+
+    public boolean putCache(String key, Object value) {
+        //首先根据一致性哈希算法找到要存放的cacheServer
+        String cacheServerId = hashCircle.get(key);
+        CacheServerLocal cacheServer = RMIService.getCacheServer(cacheServerId);
+//        System.out.println(cacheServerId);
+        try {
+            cacheServer.put(key, value);
+            System.out.println("Set cache of %s in %s".formatted(key, cacheServerId));
+            return true;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Object getCache(String key) {
+        //首先根据一致性哈希算法找到要存放的cacheServer
+        String cacheServerId = hashCircle.get(key);
+//        System.out.println(cacheServerId);
+        CacheServerLocal cacheServer = RMIService.getCacheServer(cacheServerId);
+        try {
+            Object result = cacheServer.get(key);
+            if (result == null) {
+                System.out.println("No cache of %s in %s".formatted(key, cacheServerId));
+            }else {
+                System.out.println("Get cache of %s in %s".formatted(key, cacheServerId));
+            }
+            return result;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args) {
