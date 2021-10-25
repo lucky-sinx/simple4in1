@@ -14,21 +14,27 @@ public class CacheServer extends Cache implements CacheServerLocal {
         cacheServer3.startCacheServer();
     }
 
-    public void put(String key, Object value) {
-        if (concurrentHashMap.contains(key)) {
-            CacheBase cache = concurrentHashMap.get(key);
-            cache.setValue(value);
-            cache.setCount(cache.getCount() + 1);
+    public boolean put(String key, Object value) {
+        try {
+            if (concurrentHashMap.contains(key)) {
+                CacheBase cache = concurrentHashMap.get(key);
+                cache.setValue(value);
+                cache.setCount(cache.getCount() + 1);
 //            cache.setWriteTime(System.currentTimeMillis());
-            cache.setLastTime(System.currentTimeMillis());
-            return;
+                cache.setLastTime(System.currentTimeMillis());
+                return true;
+            }
+            CacheBase newCache = new CacheBase();
+            newCache.setValue(value);
+            newCache.setCount(1);
+            newCache.setWriteTime(System.currentTimeMillis());
+            newCache.setLastTime(System.currentTimeMillis());
+            concurrentHashMap.put(key, newCache);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        CacheBase newCache = new CacheBase();
-        newCache.setValue(value);
-        newCache.setCount(1);
-        newCache.setWriteTime(System.currentTimeMillis());
-        newCache.setLastTime(System.currentTimeMillis());
-        concurrentHashMap.put(key, newCache);
     }
 
     public Object get(String key) {

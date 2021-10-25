@@ -40,10 +40,10 @@ public class RMIService {
     }
 
     public static void startPark() {
-        String name = Config.getParkName();
-        String host = Config.getParkHost();
+        String name = ConfigUtil.getParkName();
+        String host = ConfigUtil.getParkHost();
 //        host = "192.168.10.100";
-        int port = Config.getParkPort();
+        int port = ConfigUtil.getParkPort();
         Park park = new Park(host, port, name);
         createRegistry(port, name, park);
         TimerUtil.startParkTimerTask(park);
@@ -96,7 +96,7 @@ public class RMIService {
     public static void startFileServer(FileServer fileServer) {
         //获取ParkService
         try {
-            createRegistry(Config.getFileSystemLBPort(), "FileServer", fileServer);
+            createRegistry(ConfigUtil.getFileSystemLBPort(), "FileServer", fileServer);
 
             ParkLocal parkLocal = getPark();
             LogUtil.info(String.format("[FileServer]%s connect park success", fileServer.getHost()));
@@ -148,11 +148,11 @@ public class RMIService {
 //    }
 
     public static LocalFileSystem getFileServer(String host) {
-        return (LocalFileSystem) getRegistry(host, Config.getFileSystemLBPort(), "FileServer");
+        return (LocalFileSystem) getRegistry(host, ConfigUtil.getFileSystemLBPort(), "FileServer");
     }
 
     public static ParkLocal getPark() {
-        return (ParkLocal) getRegistry(Config.getParkHost(), Config.getParkPort(), Config.getParkName());
+        return (ParkLocal) getRegistry(ConfigUtil.getParkHost(), ConfigUtil.getParkPort(), ConfigUtil.getParkName());
     }
 
     public static WorkerLocal getWorker(String host, int port, String workerName) {

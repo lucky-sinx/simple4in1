@@ -1,5 +1,6 @@
 package test.cachedemo;
 
+import simple4in1.LocalCacheServer;
 import simple4in1.ParkLocal;
 import simple4in1.RMIService;
 
@@ -7,9 +8,10 @@ import java.rmi.RemoteException;
 
 public class CachePutDemo {
     public static void main(String[] args) throws RemoteException {
-        ParkLocal parkLocal = RMIService.getPark();
+//        ParkLocal parkLocal = RMIService.getPark();
+        LocalCacheServer localCacheServer = new LocalCacheServer();
         for (Integer i = 0; i < 30; i++) {
-            System.out.println(parkLocal.putCache(i.toString(), i));
+            System.out.println(localCacheServer.put(i.toString(), i));
         }
 //        System.out.println(parkLocal.putCache("1", "123"));
 //        System.out.println(parkLocal.putCache("2", "223"));

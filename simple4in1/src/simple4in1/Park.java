@@ -1,8 +1,6 @@
 package simple4in1;
 
-import javax.crypto.interfaces.PBEKey;
 import java.rmi.RemoteException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -12,7 +10,7 @@ public class Park extends Service implements ParkLocal {
     private final Map<String, Map<String, Map<String, Object>>> workers = new HashMap<>();
     private final Map<String, Object> fileServer = new HashMap<>();
     private final Map<String, Object> cacheServer = new HashMap<>();
-    private final static long timeout = Config.getHeartbeatTime() * 2;
+    private final static long timeout = ConfigUtil.getHeartbeatTime() * 2;
     private final ReadWriteLock rwlk = new ReentrantReadWriteLock();
     private final HashUtil hashCircle = new HashUtil();
 

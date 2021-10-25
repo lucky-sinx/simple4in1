@@ -8,7 +8,7 @@ import java.util.Properties;
  * 理解：
  * =ConfigContext
  */
-public class Config {
+public class ConfigUtil {
     private final static String configFile = "config.xml";
 
     private static String getConfig(String name, String prop) {

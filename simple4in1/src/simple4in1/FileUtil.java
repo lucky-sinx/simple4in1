@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FileUtil implements LocalFileSystem {
+public class FileUtil extends Service implements LocalFileSystem {
     @Override
     public boolean exists(String filePath) {
         File file = new File(filePath);

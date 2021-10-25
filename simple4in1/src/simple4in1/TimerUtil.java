@@ -16,7 +16,7 @@ public class TimerUtil {
             public void run() {
                 park.checkHeartbeats();
             }
-        }, 0, Config.getHeartbeatTime());
+        }, 0, ConfigUtil.getHeartbeatTime());
         LogUtil.info("ParkTimerTask start");
     }
 
@@ -31,7 +31,7 @@ public class TimerUtil {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }
             }
-        }, 0, Config.getHeartbeatTime());
+        }, 0, ConfigUtil.getHeartbeatTime());
     }
 
     public static void startFileServerTimerTask(ParkLocal parkLocal, String fileServerHost){
@@ -45,7 +45,7 @@ public class TimerUtil {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }
             }
-        }, 0, Config.getHeartbeatTime());
+        }, 0, ConfigUtil.getHeartbeatTime());
     }
 
     public static void startCacheServerTimerTask(ParkLocal parkLocal, String cacheServerHost){
@@ -59,6 +59,6 @@ public class TimerUtil {
                     LogUtil.severe("[TimerUtil] [startWorkerTimerTask] " + e.getClass()+": " + e.getMessage());
                 }
             }
-        }, 0, Config.getHeartbeatTime());
+        }, 0, ConfigUtil.getHeartbeatTime());
     }
 }
