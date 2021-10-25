@@ -4,7 +4,7 @@
         <NAME>Park</NAME>
         <HOST>localhost</HOST>
         <PORT>1888</PORT>
-        <HEARTBEATTIME>500</HEARTBEATTIME>
+        <HEARTBEATTIME>500000</HEARTBEATTIME>
 
         <SERVICE>ParkService</SERVICE>
         <SERVERS>localhost:1888</SERVERS>
