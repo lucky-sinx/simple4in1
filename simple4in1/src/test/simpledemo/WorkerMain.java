@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class WorkerMain {
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) {
         MyWK wk = new MyWK();
         wk.startWorker("localhost", 8001, "test");
     }

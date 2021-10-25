@@ -1,6 +1,5 @@
 package simple4in1;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class Contractor {
                     index += 1;
                 }
             }
-        } catch (RemoteException | NotBoundException e) {
+        } catch (RemoteException e) {
             LogUtil.severe("[Contractor] [getWaitingWorkers] " + e.getClass() + e.getMessage());
         }
         return waitingWorkers;
